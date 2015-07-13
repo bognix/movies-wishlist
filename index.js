@@ -1,45 +1,23 @@
-var jsdom = require("jsdom");
+var title = require("./helpers/title"),
+    wishlist = require("./helpers/wishlist"),
+    Promise = require("bluebird");
 
-jsdom.env({
-    url: "http://foo.com",
-    scripts: ["http://code.jquery.com/jquery.js"],
-    done: function (errors, window) {
-        var $ = window.$;
-        $('tbody > tr').each(function() {
-            var $this = $(this),
-                title = getTitle($this),
-                quality = getQuality(title);
-            console.log(quality);
+var url = 'https://foo/search/$1/0/99/200';
+wishlist.load()
+    .then(function(content) {
+        return new Promise(function(resolve, reject) {
+            var json = JSON.parse(content),
+                parsedUrl;
+
+            for (var entry in json) {
+                parsedUrl = url.replace('$1', json[entry].title);
+                title.getData(parsedUrl)
+                    .then(function(data) {
+                        resolve(data);
+                    })
+            }
         });
-    }
-});
-
-function getTitle($row) {
-    return $row.find('.detName a').text()
-}
-
-function getQuality(title) {
-    var badPattern = /CAM(RIP)*|HD.*TS|TELE|HD*TV|Trailer|TBS|WEBRIP/gi,
-        goodPattern = /BD.*RIP|BR.*RIP|DVD.*RIP/gi,
-        goodMatch = title.match(goodPattern),
-        badMatch;
-    if (goodMatch) {
-        return {
-            'status': 'good',
-            'tag': goodMatch[0]
-        }
-    } else {
-        badMatch = title.match(badPattern);
-        if (badMatch) {
-            return {
-                'status': 'bad',
-                'tag': badMatch[0]
-            }
-        } else {
-            return {
-                status: undefined,
-                tag: '???'
-            }
-        }
-    }
-}
+    })
+    .then(function(result) {
+        console.log(result);
+    });
