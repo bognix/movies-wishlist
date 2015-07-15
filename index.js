@@ -1,8 +1,10 @@
 var title = require("./helpers/title"),
     wishlist = require("./helpers/wishlist"),
-    Promise = require("bluebird");
+    Promise = require("bluebird"),
+    notifier = require("./helpers/notifier");
 
-var url = 'https://foo/search/$1/0/99/200';
+
+var url = 'https://foo.se/search/$1/0/99/200';
 wishlist.load()
     .then(function(content) {
         return new Promise(function(resolve, reject) {
@@ -19,5 +21,10 @@ wishlist.load()
         });
     })
     .then(function(result) {
-        console.log(result);
+        return new Promise(function(resolve, reject) {
+            notifier.sendMail(resolve, reject, result)
+        })
+    })
+    .then(function(response) {
+        console.log(response);
     });
