@@ -1,24 +1,19 @@
 var title = require("./helpers/title"),
     wishlist = require("./helpers/wishlist"),
     Promise = require("bluebird"),
+    fetcher = require("./helpers/fetcher"),
     notifier = require("./helpers/notifier");
+    processor = require("./helpers/processor");
 
 
-var url = 'https://foo.se/search/$1/0/99/200';
 wishlist.load()
     .then(function(content) {
+        return fetcher.fetchData(content)
+    })
+    .then(function(resultsArr) {
         return new Promise(function(resolve, reject) {
-            var json = JSON.parse(content),
-                parsedUrl;
-
-            for (var entry in json) {
-                parsedUrl = url.replace('$1', json[entry].title);
-                title.getData(parsedUrl)
-                    .then(function(data) {
-                        resolve(data);
-                    })
-            }
-        });
+            return processor.toMailContent(resolve, resultsArr)
+        })
     })
     .then(function(result) {
         return new Promise(function(resolve, reject) {
@@ -26,5 +21,4 @@ wishlist.load()
         })
     })
     .then(function(response) {
-        console.log(response);
     });
