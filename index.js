@@ -15,9 +15,9 @@ wishlist.load()
             return processor.toMailContent(resolve, resultsArr)
         })
     })
-    .then(function(result) {
+    .then(function(html) {
         return new Promise(function(resolve, reject) {
-            notifier.sendMail(resolve, reject, result)
+            notifier.sendMail(resolve, reject, html)
         })
     })
     .then(function(response) {

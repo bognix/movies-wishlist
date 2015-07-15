@@ -12,11 +12,11 @@ var mailOptions = {
     from: process.env.GMAIL_USER,
     to: process.env.GMAIL_RECEPIENT,
     subject: '(no-reply) Movie Wishlist status',
-    text: '' // plaintext body
+    html: '' // plaintext body
 };
 
 function sendMail(resolve, reject, message) {
-    mailOptions.text = JSON.stringify(message);
+    mailOptions.html = JSON.stringify(message);
     console.log(mailOptions);
     transporter.sendMail(mailOptions, function(error, info){
         if(error){

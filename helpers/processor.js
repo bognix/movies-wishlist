@@ -1,11 +1,11 @@
 function toMailContent(resolve, resultsArr) {
-    var html = '<html><head><style>' +
+    var html = '<body><style>' +
             '.good {' +
             'color: yellowgreen;' +
             '}' +
             '.bad {' +
             'color: red;' +
-            '}</style></head><body>%content%</body></html>',
+            '}</style>%content%</body></html>',
         entryHtml = '<div class=%class%>' +
             '<span>%title% :</span>' +
             '<span>quality: %tag%</span>' +
