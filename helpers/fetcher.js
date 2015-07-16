@@ -15,7 +15,7 @@ Promise = require("bluebird");
 
         for (var entry in json) {
             parsedUrl = url.replace('$1', json[entry].title);
-            title.getData(parsedUrl)
+            title.getData(parsedUrl, json[entry].keywords)
                 .then(function(data) {
                     results.push(data);
                     i += 1;

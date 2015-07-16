@@ -1,7 +1,7 @@
 var jsdom = require("jsdom"),
     Promise = require('bluebird');
 
-function getData(url) {
+function getData(url, keywords) {
     return new Promise(function(resolve, reject) {
         jsdom.env({
             url: url,
@@ -16,6 +16,8 @@ function getData(url) {
                     result.quality = getQuality(result.title);
                     result.magnetLink = getMagnetLink($this);
                     result.seedersAndLeechers = getSeedersAndLeechers($this);
+                    result.matchesKeywords = matchesKeywords(result.title, keywords);
+                    result.isGood = getOverallRating(result);
                     results.push(result);
                 });
                 resolve(results);
@@ -66,4 +68,22 @@ function getSeedersAndLeechers($row) {
     }
 }
 
+function getOverallRating(result) {
+    if (result.quality.status === 'bad') {
+        return false;
+    }
+    if (result.seedersAndLeechers.seeders < 50 || result.seedersAndLeechers.leechers < 100) {
+        return false;
+    }
+    return result.matchesKeywords;
+
+}
+
+function matchesKeywords(title, keywords) {
+    for (var i = 0; i < keywords.length; i++) {
+        if (title.indexOf(keywords[i]) > -1) {
+            return true;
+        }
+    }
+}
 module.exports.getData = getData;

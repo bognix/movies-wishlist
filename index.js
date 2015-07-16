@@ -1,5 +1,4 @@
-var title = require("./helpers/title"),
-    wishlist = require("./helpers/wishlist"),
+var wishlist = require("./helpers/wishlist"),
     Promise = require("bluebird"),
     fetcher = require("./helpers/fetcher"),
     notifier = require("./helpers/notifier");
@@ -11,9 +10,7 @@ wishlist.load()
         return fetcher.fetchData(content)
     })
     .then(function(resultsArr) {
-        return new Promise(function(resolve, reject) {
-            return processor.toMailContent(resolve, resultsArr)
-        })
+        return processor.createMailContent(resultsArr)
     })
     .then(function(html) {
         return new Promise(function(resolve, reject) {

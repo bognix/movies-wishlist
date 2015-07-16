@@ -1,32 +1,57 @@
-function toMailContent(resolve, resultsArr) {
-    var html = '<body><style>' +
-            '.good {' +
-            'color: yellowgreen;' +
-            '}' +
-            '.bad {' +
-            'color: red;' +
-            '}</style>%content%</body></html>',
-        entryHtml = '<div class=%class%>' +
-            '<span>%title% :</span>' +
-            '<span>quality: %tag%</span>' +
-            '<span>seeders/leechers: %seeders%/%leechers%</span>' +
-            '<span>magnet: %magnet%</span></div>',
-        title, i, j, content = '', resultJson;
+var Promise = require("bluebird"),
+    fs = require("fs"),
+    Handlebars = require("handlebars");
 
-    for (i = 0; i < resultsArr.length; i++) {
-        for (j = 0; j < resultsArr[i].length; j++) {
-            resultJson = resultsArr[i][j];
-            content += entryHtml.replace('%title%', resultJson.title)
-                .replace('%tag%', resultJson.quality.tag)
-                .replace('%seeders%', resultJson.seedersAndLeechers.seeders)
-                .replace('%leechers%', resultJson.seedersAndLeechers.leechers)
-                .replace('%magnet%', resultJson.magnetLink)
-                .replace('%class%', resultJson.quality.status)
-        }
-    }
-    html = html.replace('%content%', content);
-    resolve(html);
+function createMailContent(resultsArr) {
+    return new Promise(function(resolve, reject) {
+        getTemplate()
+            .then(function(template) {
+                data = prepareData(resultsArr);
+                console.log(data);
+                resolve(template(data))
+            })
+    });
 }
 
+function getTemplate() {
+    return new Promise(function(resolve, reject) {
+        fs.readFile('./templates/email.hbs', 'utf-8', function(err, source) {
+            var template = Handlebars.compile(source);
+            resolve(template);
+        });
+    });
+}
 
-module.exports.toMailContent = toMailContent;
+function prepareData(resultsArr) {
+    var titles = [], foundGood, resultJson, i, j;
+    for (i = 0; i < resultsArr.length; i++) {
+        foundGood = false;
+        for (j = 0; j < resultsArr[i].length; j++) {
+            resultJson = resultsArr[i][j];
+            if (resultJson.isGood) {
+                titles.push({
+                    good: true,
+                    title: resultJson.title,
+                    quality: resultJson.quality.tag,
+                    magnet: resultJson.magnet
+                });
+                foundGood = true;
+                break;
+            }
+        }
+        if (!foundGood) {
+            resultJson = resultsArr[i][0];
+            titles.push({
+                good: false,
+                title: resultJson.title,
+                quality: resultJson.quality.tag,
+                magnet: resultJson.magnet
+            });
+        }
+    }
+    return {
+        "titles": titles
+    };
+}
+
+module.exports.createMailContent = createMailContent;
