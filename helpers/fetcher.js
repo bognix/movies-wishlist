@@ -27,6 +27,4 @@ Promise = require("bluebird");
     });
 }
 
-
-
 module.exports.fetchData = fetchData;

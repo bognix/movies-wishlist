@@ -1,2 +1,6 @@
 node_modules/
 .idea/
+tmp/
+vendor/
+dist/
+bower_components/
