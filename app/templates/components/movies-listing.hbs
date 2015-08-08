@@ -1,6 +1,7 @@
 <div>
     <ul>
-        <li>Movie number one</li>
-        <li>Movie number two</li>
+        {{#each movies as |movie|}}
+          {{movie.title}}
+        {{/each}}
     </ul>
 </div>
