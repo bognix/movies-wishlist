@@ -3,7 +3,7 @@ Promise = require("bluebird");
 
 
     function fetchData(content) {
-    var url = 'https://foo.se/search/$1/0/99/200',
+    var url = 'https://thepiratebay.se/search/$1/0/99/200',
         results = [];
 
     return new Promise(function(resolve, reject) {

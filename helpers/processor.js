@@ -7,7 +7,6 @@ function createMailContent(resultsArr) {
         getTemplate()
             .then(function(template) {
                 data = prepareData(resultsArr);
-                console.log(data);
                 resolve(template(data))
             })
     });
@@ -45,7 +44,7 @@ function prepareData(resultsArr) {
                 good: false,
                 title: resultJson.title,
                 quality: resultJson.quality.tag,
-                magnet: resultJson.magnet
+                magnet: resultJson.magnetLink
             });
         }
     }
