@@ -4,3 +4,4 @@ tmp/
 vendor/
 dist/
 bower_components/
+*.sublime-*

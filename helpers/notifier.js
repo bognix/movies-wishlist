@@ -17,7 +17,6 @@ var mailOptions = {
 
 function sendMail(resolve, reject, message) {
     mailOptions.html = JSON.stringify(message);
-    console.log(mailOptions);
     transporter.sendMail(mailOptions, function(error, info){
         if(error){
             reject(error);
