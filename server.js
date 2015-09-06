@@ -3,13 +3,13 @@ var app            = express();
 var bodyParser     = require('body-parser');
 
 
-
 // set our port
-var port = process.env.PORT || 3000;
+var server_port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080;
+server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'
 
 // set up mongoose, assume locally installed
-var mongoose   = require('mongoose');
-mongoose.connect('mongodb://localhost/RESTServer');
+// var mongoose   = require('mongoose');
+// mongoose.connect('mongodb://localhost/RESTServer');
 
 // set the static files location for our Ember application
 app.use(express.static(__dirname + '/public'));
@@ -22,11 +22,12 @@ app.use(bodyParser.json());       // to support JSON-encoded bodies
 //Routes API
 var router = express.Router();
 app.use('/', router);
-require('./routes')(app, router); // configure our routes
+require('./server/routes')(app, router); // configure our routes
 
 // startup our app at http://localhost:3000
-console.log('server is running');
-app.listen(port);
+app.listen(server_port, server_ip_address, function() {
+  console.log("Listening on " + server_ip_address + ", server_port " + server_port)
+});
 
 
 // expose app
