@@ -48,7 +48,7 @@ function prepareData(resultsArr) {
             });
         }
     }
-    return {
+   return {
         "titles": titles
     };
 }
