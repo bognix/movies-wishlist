@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var movies = require('./server/routes/apiMovies');
 
+app.use(express.static('public'));
 app.use('/api/movies', movies);
 
 var server = app.listen(3000, function () {
