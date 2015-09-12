@@ -1,8 +1,8 @@
-var wishlist = require("./helpers/wishlist"),
+var wishlist = require("./server/helpers/wishlist"),
     Promise = require("bluebird"),
-    fetcher = require("./helpers/fetcher"),
-    notifier = require("./helpers/notifier");
-    processor = require("./helpers/processor");
+    fetcher = require("./server/helpers/fetcher"),
+    notifier = require("./server/helpers/notifier");
+    processor = require("./server/helpers/processor");
 
 
 wishlist.load()

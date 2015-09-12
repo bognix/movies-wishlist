@@ -14,7 +14,7 @@ function createMailContent(resultsArr) {
 
 function getTemplate() {
     return new Promise(function(resolve, reject) {
-        fs.readFile('./templates/email.hbs', 'utf-8', function(err, source) {
+        fs.readFile('./server/templates/email.hbs', 'utf-8', function(err, source) {
             var template = Handlebars.compile(source);
             resolve(template);
         });
