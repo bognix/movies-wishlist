@@ -3,7 +3,7 @@ var app = express();
 var movies = require('./server/routes/apiMovies');
 var mongoose = require('mongoose');
 
-//middlewares
+//middleware
 app.use(express.static('public'));
 app.use('/api/movies', movies);
 
@@ -12,11 +12,12 @@ mongoose.connect('mongodb://localhost/movie_wishlist');
 db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function (callback) {
-  console.log('Connected to db');
+    console.log('Connected to db');
 });
-var server = app.listen(3000, function () {
-  var host = server.address().address;
-  var port = server.address().port;
 
-  console.log('Example app listening at http://%s:%s', host, port);
+//Server
+var server = app.listen(3000, function () {
+    var host = server.address().address;
+    var port = server.address().port;
+    console.log('Example app listening at http://%s:%s', host, port);
 });

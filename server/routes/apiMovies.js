@@ -1,10 +1,7 @@
 var express = require('express');
 var router = express.Router();
-//var movieSchema = require('./server/schemas/movieSchema');
-
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-
 var movieSchema = new Schema({
     title:  String,
     keywords: []
