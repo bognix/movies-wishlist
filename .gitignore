@@ -5,3 +5,12 @@ vendor/
 dist/
 bower_components/
 *.sublime-*
+
+dist/
+tmp/
+
+.sass-cache
+connect.lock
+libpeerconnection.log
+npm-debug.log
+testem.log
