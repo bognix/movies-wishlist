@@ -7,7 +7,7 @@ router.get('/', function (req, res) {
 		if (err) {
 			return console.error(err);
 		} else {
-			res.send(movies);
+			res.render('index', { movies: movies});
 		}
 	});
 });
