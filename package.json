@@ -25,5 +25,8 @@
     "jsdom": "^3.1.2",
     "mongoose": "^4.1.5",
     "nodemailer": "^1.4.0"
+  },
+  "devDependencies": {
+    "pow-mongodb-fixtures": "^0.13.0"
   }
 }
