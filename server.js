@@ -1,10 +1,13 @@
-var express        = require('express');
-var app            = express();
-var bodyParser     = require('body-parser');
+var express = require('express');
+var app = express();
+var bodyParser = require('body-parser');
 var db = require('./models/db');
 var movies = require('./models/movie');
 var exphbs = require('express-handlebars');
 
+process.on('uncaughtException', function (err) {
+	console.error(err);
+});
 
 // set our port
 var server_port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080;
@@ -28,10 +31,6 @@ app.use(require('./server/controllers'));
 // startup our app at http://localhost:3000
 app.listen(server_port, server_ip_address, function () {
 	console.log("Listening on " + server_ip_address + ", server_port " + server_port)
-});
-
-process.on('uncaughtException', function (err) {
-	console.log(err);
 });
 
 // expose app

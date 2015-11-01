@@ -1,0 +1,17 @@
+{{#each result as |entry| }}
+	<div>
+		<p><span>Title: </span><span>{{entry.title}}</span></p>
+
+		<p><span>Tag: </span><span>{{entry.quality.tag}}</span></p>
+
+		<p><span>Magnet: </span><a href="{{entry.magnetLink}}">here</a></p>
+
+		<p>
+			<span>Seeders/Leechers: </span>
+			<span>
+				{{entry.seedersAndLeechers.seeders}}
+				/ {{entry.seedersAndLeechers.leechers}}
+			</span>
+		</p>
+	</div>
+{{/each}}
