@@ -13,12 +13,11 @@
 			font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
 			font-size: 100%;
 		}
-		#status {
-			/* avoid an excessively wide status text */
-			white-space: pre;
-			text-overflow: ellipsis;
-			overflow: hidden;
-			max-width: 400px;
+		#result {
+			display: none;
+		}
+		#magnet {
+			cursor: pointer;
 		}
 	</style>
 
@@ -26,6 +25,19 @@
 </head>
 <body>
 <div id="status"></div>
-<img id="image-result" hidden>
+<div id="result">
+	<div>
+		<p><span>Title: </span><span id="title"></span></p>
+
+		<p><span>Tag: </span><span id="tag"></span></p>
+
+		<p><span>Magnet: </span><span id="magnet">here</span></p>
+
+		<p>
+			<span>Seeders/Leechers: </span>
+			<span id="seedersLeechers">
+			</span>
+		</p>
+</div>
 </body>
 </html>
