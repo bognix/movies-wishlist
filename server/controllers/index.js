@@ -14,10 +14,14 @@ router.get('/', function (req, res) {
 	});
 });
 
-router.get('/api/status/:title', function (req, res) {
+router.get('/api/status/:title/:limit?', function (req, res) {
 	fetcher.fetchDataForTitle(req.params.title)
 		.then(function (result) {
-			res.send(result);
+			if  (req.params.limit) {
+				res.send(result.slice(0, req.params.limit));
+			} else {
+				res.send(result);
+			}
 		})
 		.catch(function (err) {
 			console.error(err);
