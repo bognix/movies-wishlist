@@ -1,6 +1,8 @@
 var express = require('express'),
 	router = express.Router(),
-	mongoose = require('mongoose');
+	mongoose = require('mongoose'),
+	fetcher = require('../../helpers/fetcher');
+
 
 router.get('/', function (req, res) {
 	mongoose.model('Movie').find({}, function (err, movies) {
@@ -10,6 +12,16 @@ router.get('/', function (req, res) {
 			res.render('index', { movies: movies});
 		}
 	});
+});
+
+router.get('/status/:title', function (req, res) {
+	fetcher.fetchDataForTitle(req.params.title)
+		.then(function(result) {
+			res.send(result);
+		})
+		.catch(function(err) {
+			console.error(err);
+		});
 });
 
 module.exports = router;
