@@ -12,12 +12,9 @@ function getCurrentTabUrl(callback) {
 	});
 }
 
-function renderStatus(statusText) {
-	document.getElementById('status').textContent = statusText;
-}
-
 function getMagnetLink(title) {
 	var url = "http://moviewishlist-bogna.rhcloud.com/api/status/" + title + "/1";
+	showLoader();
 	return fetch(url, {method: 'get'})
 		.then(function (response) {
 			return response.json();
@@ -27,33 +24,60 @@ function getMagnetLink(title) {
 		})
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-	getCurrentTabUrl(function (url) {
-		var title;
+function showLoader() {
+	document.getElementById('loader').style.display = "block";
+	document.getElementById('content').style.display = "none";
+}
 
+function hideLoader() {
+	document.getElementById('loader').style.display = "none";
+	document.getElementById('content').style.display = "block";
+}
+
+function showResults(data) {
+	document.getElementById('search').style.display = "none";
+	document.getElementById('result').style.display = "block";
+
+	document.getElementById('title').textContent = data.title;
+	document.getElementById('tag').textContent = data.quality.tag;
+	document.getElementById('magnet').addEventListener('click', function () {
+		var url = document.getElementById('magnet').dataset.href;
+		chrome.tabs.create({url: url});
+	}, true);
+
+	document.getElementById('magnet').dataset.href = data.magnetLink;
+	document.getElementById('seedersLeechers').textContent =
+		data.seedersAndLeechers.seeders + "/" + data.seedersAndLeechers.leechers;
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+
+	document.addEventListener('click', function () {
+		var titleInput = document.getElementById('titleInput');
+		if (titleInput.value) {
+			getMagnetLink(encodeURIComponent(titleInput.value))
+				.then(function (data) {
+					hideLoader();
+					showResults(data[0]);
+				})
+				.catch(function (err) {
+
+				});
+		}
+	}, true);
+
+	getCurrentTabUrl(function (url) {
 		if (url.indexOf('www.filmweb') > -1) {
 			chrome.tabs.executeScript({
 				code: 'document.querySelector("#body h2.cap").innerText'
 			}, function (res) {
-				renderStatus('Getting best magnet link for title: ' + res[0]);
 				getMagnetLink(res)
 					.then(function (data) {
-						document.getElementById('status').style.display = "none";
-						document.getElementById('result').style.display = "block";
-						document.getElementById('title').textContent = data[0].title;
-						document.getElementById('tag').textContent = data[0].quality.tag;
-						document.getElementById('magnet').addEventListener('click', function() {
-							var url = document.getElementById('magnet').dataset.href;
-							chrome.tabs.create({url: url});
-						}, true);
-
-						document.getElementById('magnet').dataset.href = data[0].magnetLink;
-						document.getElementById('seedersLeechers').textContent =
-							data[0].seedersAndLeechers.seeders + "/" + data[0].seedersAndLeechers.leechers;
-
+						hideLoader();
+						showResults(data[0]);
 					})
 					.catch(function (err) {
-						renderStatus("Error when fetching data");
+
 					});
 			});
 		}

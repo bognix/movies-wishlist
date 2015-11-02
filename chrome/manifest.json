@@ -4,6 +4,7 @@
   "description": "This extension checks if movie is available to download in decent quality",
   "version": "1.0",
   "browser_action": {
+    "default_icon": "icon.png",
     "default_popup": "movie_popup.html"
   },
   "permissions": [
