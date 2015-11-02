@@ -14,17 +14,18 @@ function getCurrentTabUrl(callback) {
 
 function getMagnetLink(title) {
 	var url = "http://moviewishlist-bogna.rhcloud.com/api/status/" + title + "/1";
-	showLoader();
 	return fetch(url, {method: 'get'})
 		.then(function (response) {
 			return response.json();
 		})
 		.catch(function (err) {
-			console.log(err);
 		})
 }
 
-function showLoader() {
+function showLoader(message) {
+	if (message) {
+		document.getElementById('loaderMessage').textContent = message;
+	}
 	document.getElementById('loader').style.display = "block";
 	document.getElementById('content').style.display = "none";
 }
@@ -55,15 +56,16 @@ document.addEventListener('DOMContentLoaded', function () {
 	document.addEventListener('click', function () {
 		var titleInput = document.getElementById('titleInput');
 		if (titleInput.value) {
+			showLoader();
 			getMagnetLink(encodeURIComponent(titleInput.value))
 				.then(function (data) {
 					hideLoader();
 					showResults(data[0]);
 				})
 				.catch(function (err) {
-
 				});
 		}
+
 	}, true);
 
 	getCurrentTabUrl(function (url) {
@@ -71,6 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			chrome.tabs.executeScript({
 				code: 'document.querySelector("#body h2.cap").innerText'
 			}, function (res) {
+				showLoader("Searching for: "+ res);
 				getMagnetLink(res)
 					.then(function (data) {
 						hideLoader();
