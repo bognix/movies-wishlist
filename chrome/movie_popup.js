@@ -51,22 +51,31 @@ function showResults(data) {
 		data.seedersAndLeechers.seeders + "/" + data.seedersAndLeechers.leechers;
 }
 
+function getMagnetBaseOnInputVal() {
+	var titleInput = document.getElementById('titleInput');
+	if (titleInput.value) {
+		showLoader();
+		getMagnetLink(encodeURIComponent(titleInput.value))
+			.then(function (data) {
+				hideLoader();
+				showResults(data[0]);
+			})
+			.catch(function (err) {
+			});
+	}
+}
+
 document.addEventListener('DOMContentLoaded', function () {
 
-	document.addEventListener('click', function () {
-		var titleInput = document.getElementById('titleInput');
-		if (titleInput.value) {
-			showLoader();
-			getMagnetLink(encodeURIComponent(titleInput.value))
-				.then(function (data) {
-					hideLoader();
-					showResults(data[0]);
-				})
-				.catch(function (err) {
-				});
-		}
+	document.getElementById('searchSubmit').addEventListener('click', function() {
+		getMagnetBaseOnInputVal();
+	});
 
-	}, true);
+	document.getElementById('search').addEventListener('keypress', function(event) {
+		if (event.keyCode === 13) {
+			getMagnetBaseOnInputVal();
+		}
+	});
 
 	getCurrentTabUrl(function (url) {
 		if (url.indexOf('www.filmweb') > -1) {
