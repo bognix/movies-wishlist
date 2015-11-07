@@ -7,10 +7,15 @@
 			font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
 			font-size: 100%;
 			width: 400px;
+			margin: 0;
 		}
 
-		#result {
+		.hidden {
 			display: none;
+		}
+
+		.tab-content {
+			padding: 20px;
 		}
 
 		#magnet {
@@ -19,31 +24,72 @@
 
 		#loader {
 			text-align: center;
-			display: none;
 		}
 
 		#titleInput {
 			width: 80%;
 		}
+
+		.tab {
+			display: inline-block;
+			width: 200px;
+			margin: 0;
+			text-align: center;
+			border-bottom: 1px solid darkgray;
+			box-sizing: border-box;
+			line-height: 32px;
+			cursor: pointer;
+		}
+
+		.tab.active {
+			border-bottom: none;
+		}
+
+		.tab.disabled {
+			color: grey;
+			background: lightgrey;
+			cursor: default;
+		}
+
+		.tab:first-child {
+			border-right: 1px solid darkgray;
+		}
+
+		#titleInput {
+			line-height: 24px;
+		}
+
+		#searchSubmit {
+			height: 30px;
+			width: 60px;
+			background: none;
+			border: 1px solid #3b5fa4;
+			color: #9b3430;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+
+		#searchSubmit:hover {
+			color: #3b5fa4;
+			border-color: #9b3430;
+		}
+
 	</style>
 
 	<script src="movie_popup.js"></script>
 </head>
 <body>
 
-<div id="loader">
-	<img src="loader.svg"/>
-
-	<p id="loaderMessage">Searching for the best link</p>
-</div>
-
-<div id="content">
-	<div id="search">
-		<p>Search for pirate</p>
+<div class="content">
+	<a class="tab" id="searchTab">Search For Pirate</a><a class="tab" id="filmwebTab">Get title from Filmweb</a>
+	<div class="hidden tab-content" id="search">
 		<input id="titleInput" name="title" type="text" autocomplete="off" placeholder="enter title here"/>
 		<button id="searchSubmit">Go!</button>
 	</div>
-	<div id="result">
+	<div class="hidden tab-content" id="filmweb">
+		Searching for title: <span id="filmwebTitle" class="title"></span>
+	</div>
+	<div class="hidden tab-content" id="result">
 		<div>
 			<p><span>Title: </span><span id="title"></span></p>
 
@@ -57,6 +103,10 @@
 			</span>
 			</p>
 		</div>
+	</div>
+	<div  class='hidden tab-content' id="loader">
+		<img src="loader.svg"/>
+		<p id="loaderMessage">Searching for the best link</p>
 	</div>
 </div>
 </body>

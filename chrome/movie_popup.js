@@ -26,21 +26,19 @@ function showLoader(message) {
 	if (message) {
 		document.getElementById('loaderMessage').textContent = message;
 	}
-	document.getElementById('loader').style.display = "block";
-	document.getElementById('content').style.display = "none";
+	removeClass(document.getElementById('loader'), 'hidden');
 }
 
 function hideLoader() {
-	document.getElementById('loader').style.display = "none";
-	document.getElementById('content').style.display = "block";
+	addClass(document.getElementById('loader'), 'hidden');
 }
 
 function showResults(data) {
-	document.getElementById('search').style.display = "none";
-	document.getElementById('result').style.display = "block";
+	removeClass(document.getElementById('result'), 'hidden');
 
 	document.getElementById('title').textContent = data.title;
 	document.getElementById('tag').textContent = data.quality.tag;
+
 	document.getElementById('magnet').addEventListener('click', function () {
 		var url = document.getElementById('magnet').dataset.href;
 		chrome.tabs.create({url: url});
@@ -64,6 +62,27 @@ function getMagnetBaseOnInputVal() {
 			});
 	}
 }
+function showSearch() {
+	addClass(document.getElementById('searchTab'), 'active');
+	removeClass(document.getElementById('search'), 'hidden');
+}
+
+function showFilmweb() {
+	addClass(document.getElementById('filmwebTab'), 'active');
+	removeClass(document.getElementById('filmweb'), 'hidden');
+}
+
+function addClass(element, className) {
+	if (!element.classList.contains(className)) {
+		element.classList.add(className);
+	}
+}
+
+function removeClass(element, className) {
+	if (element.classList.contains(className)) {
+		element.classList.remove(className);
+	}
+}
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -79,6 +98,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	getCurrentTabUrl(function (url) {
 		if (url.indexOf('www.filmweb') > -1) {
+			showFilmweb();
 			chrome.tabs.executeScript({
 				code: 'document.querySelector("#body h2.cap").innerText'
 			}, function (res) {
@@ -92,6 +112,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
 					});
 			});
+		} else {
+			addClass(document.getElementById('filmwebTab'), 'disabled');
+			showSearch();
 		}
 	});
 });
