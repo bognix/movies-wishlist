@@ -23,9 +23,12 @@ function getMagnetLink(title) {
 }
 
 function showLoader(message) {
+	addClass(document.getElementById('result'), 'hidden');
+
 	if (message) {
 		document.getElementById('loaderMessage').textContent = message;
 	}
+
 	removeClass(document.getElementById('loader'), 'hidden');
 }
 
@@ -72,6 +75,11 @@ function showFilmweb() {
 	removeClass(document.getElementById('filmweb'), 'hidden');
 }
 
+function hideFilmweb() {
+	removeClass(document.getElementById('filmwebTab'), 'active');
+	addClass(document.getElementById('filmweb'), 'hidden');
+}
+
 function addClass(element, className) {
 	if (!element.classList.contains(className)) {
 		element.classList.add(className);
@@ -82,6 +90,11 @@ function removeClass(element, className) {
 	if (element.classList.contains(className)) {
 		element.classList.remove(className);
 	}
+}
+
+function hideSearch() {
+	removeClass(document.getElementById('searchTab'), 'active');
+	addClass(document.getElementById('search'), 'hidden');
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -96,13 +109,27 @@ document.addEventListener('DOMContentLoaded', function () {
 		}
 	});
 
+	document.getElementById('searchTab').addEventListener('click', function(event) {
+		showSearch();
+		hideFilmweb();
+	});
+
+	document.getElementById('filmwebTab').addEventListener('click', function(event) {
+		if (document.getElementById('filmwebTab').classList.contains('disabled')) {
+			return;
+		}
+		hideSearch();
+		showFilmweb();
+	});
+
 	getCurrentTabUrl(function (url) {
 		if (url.indexOf('www.filmweb') > -1) {
 			showFilmweb();
 			chrome.tabs.executeScript({
 				code: 'document.querySelector("#body h2.cap").innerText'
 			}, function (res) {
-				showLoader("Searching for: "+ res);
+				document.getElementById('filmwebTitle').textContent= res;
+				showLoader();
 				getMagnetLink(res)
 					.then(function (data) {
 						hideLoader();
