@@ -15,11 +15,13 @@
 		}
 
 		.tab-content {
-			padding: 20px;
+			padding: 10px;
 		}
 
 		#magnet {
 			cursor: pointer;
+			text-decoration: underline;
+			color: #3b5fa4;
 		}
 
 		#loader {
@@ -27,7 +29,6 @@
 		}
 
 		.tab {
-			display: inline-block;
 			width: 200px;
 			margin: 0;
 			text-align: center;
@@ -74,6 +75,42 @@
 			border-color: #9b3430;
 		}
 
+		#result {
+			word-break: break-all;
+			font-size: 14px;
+			padding-top: 0;
+		}
+
+		.header {
+			text-align: center;
+			font-weight: bold;
+		}
+
+		#tag {
+			border: 1px solid black;
+			padding: 6px;
+			display: inline-block;
+			border-radius: 4px;
+			margin-right: 12px;
+		}
+
+		#tag.good {
+			border-color: #3C8D40;
+			color: #3C8D40;
+		}
+
+		.inline {
+			display: inline-block;
+		}
+
+		.good {
+			color: #3C8D40;
+		}
+		
+		.row {
+			margin-top: 10px;
+		}
+
 	</style>
 
 	<script src="movie_popup.js"></script>
@@ -81,7 +118,7 @@
 <body>
 
 <div class="content">
-	<a class="tab" id="searchTab">Search For Pirate</a><a class="tab" id="filmwebTab">Get title from Filmweb</a>
+	<a class="tab inline" id="searchTab">Search For Pirate</a><a class="tab inline" id="filmwebTab">Get title from Filmweb</a>
 	<div class="hidden tab-content" id="search">
 		<input id="titleInput" name="title" type="text" autocomplete="off" placeholder="enter title here"/>
 		<button id="searchSubmit">Go!</button>
@@ -91,17 +128,13 @@
 	</div>
 	<div class="hidden tab-content" id="result">
 		<div>
-			<p><span>Title: </span><span id="title"></span></p>
-
-			<p><span>Tag: </span><span id="tag"></span></p>
-
-			<p><span>Magnet: </span><span id="magnet">here</span></p>
-
-			<p>
-				<span>Seeders/Leechers: </span>
-			<span id="seedersLeechers">
-			</span>
-			</p>
+			<p class="header">Torrent Info</p>
+			<div class="row"><a id="magnet" href="#"><span id="title"></span></a></div>
+			<div class="row">
+				<div class='inline good' id="tag"></div><div class="inline">
+					<span>Seeders/Leechers: </span><span class='good' id="seedersLeechers"></span>
+				</div>
+			</div>
 		</div>
 	</div>
 	<div  class='hidden tab-content' id="loader">
