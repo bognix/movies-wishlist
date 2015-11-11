@@ -88,26 +88,27 @@
 		}
 
 		#tag {
-			border: 1px solid black;
+			border: 1px solid #000;
 			padding: 6px;
 			display: inline-block;
 			border-radius: 4px;
 			margin-right: 12px;
 		}
 
-		#tag.good {
-			border-color: #3C8D40;
-			color: #3C8D40;
-		}
-
 		.inline {
 			display: inline-block;
 		}
 
-		.good {
+		#result.good #tag, #result.good #seedersLeechers {
+			border-color: #3C8D40;
 			color: #3C8D40;
 		}
-		
+
+		#result.bad #tag, #result.bad #seedersLeechers {
+			border-color: #9b3430;
+			color: #9b3430;
+		}
+
 		.row {
 			margin-top: 10px;
 		}
@@ -132,8 +133,8 @@
 			<p class="header">Torrent Info</p>
 			<div class="row"><a id="magnet" href="#"><span id="title"></span></a></div>
 			<div class="row">
-				<div class='inline good' id="tag"></div><div class="inline">
-					<span>Seeders/Leechers: </span><span class='good' id="seedersLeechers"></span>
+				<div class='inline' id="tag"></div><div class="inline">
+					<span>Seeders/Leechers: </span><span id="seedersLeechers"></span>
 				</div>
 			</div>
 		</div>

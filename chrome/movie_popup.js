@@ -37,19 +37,28 @@ function hideLoader() {
 }
 
 function showResults(data) {
-	removeClass(document.getElementById('result'), 'hidden');
+	var resultNode = document.getElementById('result'),
+		magnetNode = document.getElementById('magnet');
+
+	removeClass(resultNode, 'hidden');
+	removeClass(resultNode, 'good');
+	removeClass(resultNode, 'bad');
+
+	data.isGood ?
+		(addClass(resultNode, 'good') || removeClass(resultNode, 'bad')) :
+		(addClass(resultNode, 'bad') || removeClass(resultNode, 'good'));
 
 	document.getElementById('title').textContent = data.title;
 	document.getElementById('tag').textContent = data.quality.tag;
+	magnetNode.dataset.href = data.magnetLink;
+	document.getElementById('seedersLeechers').textContent =
+		data.seedersAndLeechers.seeders + "/" + data.seedersAndLeechers.leechers;
 
-	document.getElementById('magnet').addEventListener('click', function () {
-		var url = document.getElementById('magnet').dataset.href;
+	magnetNode.addEventListener('click', function () {
+		var url = magnetNode.dataset.href;
 		chrome.tabs.create({url: url});
 	}, true);
 
-	document.getElementById('magnet').dataset.href = data.magnetLink;
-	document.getElementById('seedersLeechers').textContent =
-		data.seedersAndLeechers.seeders + "/" + data.seedersAndLeechers.leechers;
 }
 
 function getMagnetBaseOnInputVal() {
