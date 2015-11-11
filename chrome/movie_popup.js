@@ -135,7 +135,9 @@ document.addEventListener('DOMContentLoaded', function () {
 		if (url.indexOf('www.filmweb') > -1) {
 			showFilmweb();
 			chrome.tabs.executeScript({
-				code: 'document.querySelector("#body h2.cap").innerText'
+				code: 'var x = document.querySelectorAll("#body h2.cap, #body h1.filmTitle a");' +
+				'x.length === 2 ? x[1].innerText : x[0].innerText;',
+				runAt: 'document_idle'
 			}, function (res) {
 				document.getElementById('filmwebTitle').textContent= res;
 				showLoader();
